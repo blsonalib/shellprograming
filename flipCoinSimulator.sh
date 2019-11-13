@@ -1,32 +1,42 @@
 
 #!/bin/bash -x
-declare -A  storeflip
-count=0
-head=0
-tail=0
-read -p "Enter Second number: " flip
-while [ $count -lt $flip ]
-do
-    number=$((RANDOM%2))
-     if [ $number -eq 0 ]
-     then
-        ((tail++))
-         
-     else
-       ((head++))
 
-        
-     fi
-((count++))     
-done
-     echo "number of heads is" $tail
-     echo "number of tails is" $head
-     storeflip[Heads]=$head
-     storeflip[Tails]=$tail
-     headsNumber=$(( $head * 100 ))
-     percentOfHead=$(( $headsNumber / $flip ))
-     tailsNumber=$(( $tail * 100 ))
-     numberOfTails=$(( $headsNumber - $tailsNumber ))
-     percentOfTail=$(( $numberOfTails / $flip ))
-     
+declare -A  storeflip
+echo "welcome"
+tail=0
+head=0
+read -p "Enter the number of flips: " flip
+read -p "Enter the Combination of flips: " coin
+ function  flipcoin()
+ {
     
+        for (( i=1; i<=$flip; i++ ))
+	do
+	str=""
+		for(( j=0; j<$coin; j++ ))
+ 		do
+    		    result=$(( RANDOM % 2 ))
+
+      		       if [ $result -eq 0 ]
+			then
+   			  str=$str"T"
+           		  tail=$(( $tail + 1 ))
+                         else
+                           str=$str"H"
+                           head=$(( $head + 1))
+			fi
+                  done
+                
+                storeflip["$str"]=$(( ${storeflip["$str"]} + 1 ))  
+
+  done
+  }
+  flipcoin
+  echo ${!storeflip[@]}
+  echo ${storeflip[@]}
+ MaxValueCoin=$( printf "%s\n" ${!storeflip[@]} ${storeflip[@]} | sort -nr | head -1 )
+ percentofMaximumCoin=$(( $MaxValueCoin * 100 / $flip ))
+echo $percentofMaximumCoin
+ 
+ 
+
